@@ -1,0 +1,810 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin Dashboard — RRR & CO</title>
+
+  <!-- Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,700;1,700&family=Poppins:wght@300;400;600;700&display=swap"
+    rel="stylesheet">
+
+  <style>
+    /* ========== Base (kept compatible with your site) ========== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    html,
+    body {
+      height: 100%
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f6f7fb;
+      color: #223;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: 'Merriweather', serif
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none
+    }
+
+    /* ========== Admin Wrap ========== */
+    .adminWrap {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      min-height: 100vh;
+      gap: 24px;
+    }
+
+    /* ========== Sidebar ========== */
+    .admSidebar {
+      background: #fff;
+      border-right: 1px solid rgba(30, 34, 40, 0.04);
+      padding: 24px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: auto;
+    }
+
+    .admBrand {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .admBrand .logoBox {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #ffb347, #ff8c00);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 700;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .admBrand h3 {
+      font-size: 1.05rem;
+      color: #2c3e50
+    }
+
+    .admNav {
+      margin-top: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px
+    }
+
+    .admNav a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      color: #3a4956;
+      font-weight: 600;
+      font-size: .95rem;
+    }
+
+    .admNav a:hover {
+      background: rgba(255, 140, 0, 0.06);
+      color: #2c3e50
+    }
+
+    .admNav a.active {
+      background: linear-gradient(90deg, rgba(255, 140, 0, 0.12), rgba(255, 140, 0, 0.06));
+      color: #d35400
+    }
+
+    /* ========== Main area ========== */
+    .admMain {
+      padding: 28px;
+      overflow: auto;
+    }
+
+    .admTopbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .admTopbar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px
+    }
+
+    .admToggle {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: #fff;
+      border: 1px solid rgba(30, 34, 40, 0.04);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .admSearch {
+      display: flex;
+      align-items: center;
+      background: #fff;
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(30, 34, 40, 0.04);
+      gap: 10px;
+      min-width: 260px;
+    }
+
+    .admSearch input {
+      border: 0;
+      outline: none;
+      font-size: .95rem;
+      background: transparent
+    }
+
+    .admTopbar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px
+    }
+
+    .admIconBtn {
+      background: #fff;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(30, 34, 40, 0.04);
+      cursor: pointer;
+    }
+
+    /* ========== KPI Cards ========== */
+    .admKpis {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .admkpi {
+      background: linear-gradient(180deg, #fff, #fffaf0);
+      border-radius: 12px;
+      padding: 18px;
+      border: 1px solid rgba(30, 34, 40, 0.04);
+      box-shadow: 0 8px 20px rgba(20, 24, 28, 0.04);
+      transition: transform .25s ease, box-shadow .25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .admkpi:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(20, 24, 28, 0.08)
+    }
+
+    .admkpi .khead {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px
+    }
+
+    .knum {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #2c3e50
+    }
+
+    .ksub {
+      font-size: .95rem;
+      color: #666
+    }
+
+    .kdelta {
+      font-weight: 700;
+      color: #16a34a
+    }
+
+    /* small sparkline canvas */
+    .miniChart {
+      width: 100%;
+      height: 38px;
+      display: block
+    }
+
+    /* ========== Charts Row ========== */
+    .admCharts {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .chartCard {
+      background: #fff;
+      border-radius: 12px;
+      padding: 18px;
+      border: 1px solid rgba(30, 34, 40, 0.04);
+      box-shadow: 0 8px 20px rgba(20, 24, 28, 0.04);
+    }
+
+    .chartHeader {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px
+    }
+
+    canvas {
+      width: 100%;
+      height: 260px;
+      display: block
+    }
+
+    /* ========== Activity / Table ========== */
+    .admTable {
+      margin-top: 18px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 12px;
+      border: 1px solid rgba(30, 34, 40, 0.04);
+      box-shadow: 0 8px 20px rgba(20, 24, 28, 0.04);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse
+    }
+
+    th,
+    td {
+      padding: 12px 10px;
+      text-align: left;
+      border-bottom: 1px solid rgba(30, 34, 40, 0.04)
+    }
+
+    th {
+      color: #667;
+      font-weight: 700
+    }
+
+    tr:last-child td {
+      border-bottom: 0
+    }
+
+    /* badges */
+    .badge {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #fff6e6;
+      color: #d35400;
+      font-weight: 700;
+      font-size: .9rem
+    }
+
+    /* ========== Modal ========== */
+    .admModal {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 999;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity .2s ease, visibility .2s
+    }
+
+    .admModal.open {
+      visibility: visible;
+      opacity: 1
+    }
+
+    .admModal .card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 720px;
+      width: 92%
+    }
+
+    /* ========== Responsive ========== */
+    @media (max-width:1100px) {
+      .adminWrap {
+        grid-template-columns: 200px 1fr
+      }
+
+      .admKpis {
+        grid-template-columns: repeat(3, 1fr)
+      }
+
+      .admCharts {
+        grid-template-columns: 1fr 320px
+      }
+    }
+
+    @media (max-width:860px) {
+      .adminWrap {
+        grid-template-columns: 1fr
+      }
+
+      .admSidebar {
+        position: fixed;
+        left: -320px;
+        top: 0;
+        bottom: 0;
+        z-index: 60;
+        width: 280px;
+        transition: left .28s ease
+      }
+
+      .admSidebar.open {
+        left: 0
+      }
+
+      .admMain {
+        padding: 18px
+      }
+
+      .admTopbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px
+      }
+
+      .admKpis {
+        grid-template-columns: repeat(2, 1fr)
+      }
+
+      .admCharts {
+        grid-template-columns: 1fr
+      }
+
+      .admkpi {
+        min-height: 100px
+      }
+    }
+
+    @media (max-width:480px) {
+      .admKpis {
+        grid-template-columns: 1fr
+      }
+
+      .srvctitle {
+        font-size: 1.25rem
+      }
+
+      th,
+      td {
+        padding: 10px 6px;
+        font-size: .95rem
+      }
+
+      canvas {
+        height: 200px
+      }
+    }
+
+    /* tiny helpers */
+    .muted {
+      color: #6b7280;
+      font-weight: 600
+    }
+
+    .flex {
+      display: flex;
+      align-items: center;
+      gap: 12px
+    }
+
+    .ml-auto {
+      margin-left: auto
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="adminWrap">
+
+    <!-- SIDEBAR -->
+    <nav class="admSidebar" aria-label="Admin navigation">
+      <div class="admBrand">
+        <div class="logoBox">RRR</div>
+        <div>
+          <h3>RRR &amp; CO</h3>
+          <div class="muted" style="font-size:.85rem">Finance & Tax</div>
+        </div>
+      </div>
+
+      <div class="admNav" role="menu">
+        <a href="#" class="active" data-key="overview"><span>🏠</span> Overview</a>
+        <a href="#" data-key="clients"><span>👥</span> Clients</a>
+        <a href="#" data-key="services"><span>🧾</span> Services</a>
+        <a href="#" data-key="reports"><span>📊</span> Reports</a>
+        <a href="#" data-key="settings"><span>⚙️</span> Settings</a>
+      </div>
+
+      <div style="margin-top:20px">
+        <div class="muted" style="font-size:.85rem;margin-bottom:8px">Quick Links</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <a class="badge" href="#clients">New Client</a>
+          <a class="badge" href="#reports">Export</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- MAIN -->
+    <main class="admMain">
+
+      <!-- TOPBAR -->
+      <div class="admTopbar">
+        <div class="admTopbar-left">
+          <div class="admToggle" id="admToggle" title="Toggle menu">☰</div>
+          <div class="admSearch">
+            <svg width="16" height="16" viewBox="0 0 24 24">
+              <path fill="#8b95a3" d="M21 21l-4.35-4.35..."></path>
+            </svg>
+            <input type="search" placeholder="Search clients, invoices..." aria-label="Search">
+          </div>
+        </div>
+
+        <div class="admTopbar-right">
+          <div class="admIconBtn" id="refreshBtn" title="Refresh data">⟳</div>
+          <div class="admIconBtn" id="notifBtn" title="Notifications">🔔</div>
+          <div class="admIconBtn" id="profileBtn" title="Profile">👤</div>
+        </div>
+      </div>
+
+      <!-- KPI CARDS -->
+      <section class="admKpis" aria-label="Key metrics">
+        <div class="admkpi">
+          <div class="khead">
+            <div class="muted">Revenue</div>
+            <div class="kdelta">+8.4%</div>
+          </div>
+          <div class="knum" id="kRev">₹ 0</div>
+          <small class="ksub">This month</small>
+          <canvas class="miniChart" id="miniRev" height="38"></canvas>
+        </div>
+
+        <div class="admkpi">
+          <div class="khead">
+            <div class="muted">New Clients</div>
+            <div class="kdelta" style="color:#0ea5a4">+4</div>
+          </div>
+          <div class="knum" id="kClients">0</div>
+          <small class="ksub">This month</small>
+          <canvas class="miniChart" id="miniClients" height="38"></canvas>
+        </div>
+
+        <div class="admkpi">
+          <div class="khead">
+            <div class="muted">Projects</div>
+            <div class="kdelta">+2</div>
+          </div>
+          <div class="knum" id="kProj">0</div>
+          <small class="ksub">Active</small>
+          <canvas class="miniChart" id="miniProj" height="38"></canvas>
+        </div>
+
+        <div class="admkpi">
+          <div class="khead">
+            <div class="muted">Pending</div>
+            <div class="kdelta" style="color:#ef4444">-1</div>
+          </div>
+          <div class="knum" id="kPend">0</div>
+          <small class="ksub">Tasks</small>
+          <canvas class="miniChart" id="miniPend" height="38"></canvas>
+        </div>
+      </section>
+
+      <!-- CHARTS ROW -->
+      <section class="admCharts">
+        <div class="chartCard">
+          <div class="chartHeader"><strong>Revenue Trend</strong>
+            <div class="muted">Last 12 months</div>
+          </div>
+          <canvas id="lineChart" height="260" aria-label="Revenue trend chart"></canvas>
+        </div>
+
+        <div class="chartCard">
+          <div class="chartHeader"><strong>Top Services</strong>
+            <div class="muted">This quarter</div>
+          </div>
+          <canvas id="barChart" height="260" aria-label="Top services chart"></canvas>
+          <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+            <span class="badge">Registration</span>
+            <span class="badge">Audits</span>
+            <span class="badge">GST</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ACTIVITY / TABLE -->
+      <section class="admTable" aria-labelledby="activityTitle">
+        <h3 id="activityTitle" style="margin-bottom:12px">Recent Activity</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Client</th>
+              <th>Service</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody id="activityBody">
+            <!-- JS will populate rows -->
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Counters -->
+      <section class="chooszone" aria-label="Our impact" style="margin-top:22px">
+        <div class="choositem">
+          <div class="choosnum" data-goal="500">0</div>
+          <div class="choostxt">Businesses Served</div>
+        </div>
+        <div class="choositem">
+          <div class="choosnum" data-goal="120">0</div>
+          <div class="choostxt">Projects Completed</div>
+        </div>
+        <div class="choositem">
+          <div class="choosnum" data-goal="20">0</div>
+          <div class="choostxt">Years Combined</div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Simple modal -->
+  <div class="admModal" id="admModal" aria-hidden="true">
+    <div class="card" role="dialog" aria-modal="true">
+      <h3 id="mTitle">Detail</h3>
+      <p id="mBody">Some details...</p>
+      <div style="text-align:right;margin-top:12px">
+        <button class="admIconBtn" id="closeModal">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ===================== SIDEBAR TOGGLE ===================== */
+    const admToggle = document.getElementById('admToggle');
+    const admSidebar = document.querySelector('.admSidebar');
+    admToggle.addEventListener('click', () => {
+      admSidebar.classList.toggle('open');
+    });
+
+    /* Close sidebar when clicking outside on small screens */
+    document.addEventListener('click', (e) => {
+      if (window.innerWidth <= 860) {
+        if (!e.target.closest('.admSidebar') && !e.target.closest('#admToggle')) {
+          admSidebar.classList.remove('open');
+        }
+      }
+    });
+
+    /* ===================== DUMMY DATA + UI POPULATION ===================== */
+    const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+    const kpiData = {
+      revenue: 342000,
+      clients: 28,
+      projects: 16,
+      pending: 5
+    };
+
+    document.getElementById('kRev').textContent = `₹ ${kpiData.revenue.toLocaleString()}`;
+    document.getElementById('kClients').textContent = `${kpiData.clients}`;
+    document.getElementById('kProj').textContent = `${kpiData.projects}`;
+    document.getElementById('kPend').textContent = `${kpiData.pending}`;
+
+    /* Mini sparklines */
+    function drawSpark(id, values, color) {
+      const c = document.getElementById(id);
+      if (!c) return;
+      const ctx = c.getContext('2d');
+      const w = c.width = c.clientWidth;
+      const h = c.height = 38;
+      ctx.clearRect(0, 0, w, h);
+      ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.beginPath();
+      const step = w / (values.length - 1);
+      values.forEach((v, i) => {
+        const x = i * step;
+        const y = h - (v / Math.max(...values) * h);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+    }
+    drawSpark('miniRev', [20, 30, 26, 40, 50, 45, 55, 60, 70, 65], '#ff8c00');
+    drawSpark('miniClients', [2, 3, 4, 6, 5, 8, 9, 11, 12, 13], '#0ea5a4');
+    drawSpark('miniProj', [1, 2, 3, 2, 4, 3, 5, 6, 6, 7], '#ffb347');
+    drawSpark('miniPend', [5, 4, 4, 3, 6, 5, 5, 4, 4, 6], '#ef4444');
+
+    /* ========== Line chart (Revenue) ========== */
+    function drawLineChart(id, labels, data, color) {
+      const c = document.getElementById(id);
+      const ctx = c.getContext('2d');
+      const DPR = window.devicePixelRatio || 1;
+      const W = c.clientWidth * DPR;
+      const H = c.clientHeight * DPR;
+      c.width = W; c.height = H; ctx.scale(DPR, DPR);
+      ctx.clearRect(0, 0, c.clientWidth, c.clientHeight);
+
+      // axes
+      ctx.strokeStyle = 'rgba(30,34,40,0.06)'; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(0, c.clientHeight - 24); ctx.lineTo(c.clientWidth, c.clientHeight - 24); ctx.stroke();
+
+      // compute points
+      const max = Math.max(...data);
+      const min = Math.min(...data);
+      const pad = 20;
+      const usableW = c.clientWidth - pad * 2;
+      const usableH = c.clientHeight - pad * 2 - 24;
+      ctx.beginPath();
+      data.forEach((v, i) => {
+        const x = pad + (i / (data.length - 1)) * usableW;
+        const y = pad + (1 - ((v - min) / (max - min || 1))) * usableH;
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      });
+      ctx.strokeStyle = color; ctx.lineWidth = 2.4; ctx.stroke();
+
+      // fill with gradient
+      const grad = ctx.createLinearGradient(0, 0, 0, c.clientHeight);
+      grad.addColorStop(0, color + '22');
+      grad.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.fillStyle = grad;
+      ctx.lineTo(c.clientWidth - pad, c.clientHeight - 24);
+      ctx.lineTo(pad, c.clientHeight - 24);
+      ctx.closePath();
+      ctx.fill();
+
+      // small dots
+      data.forEach((v, i) => {
+        const x = pad + (i / (data.length - 1)) * usableW;
+        const y = pad + (1 - ((v - min) / (max - min || 1))) * usableH;
+        ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI * 2); ctx.fill();
+        ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.stroke();
+      });
+    }
+
+    // sample labels and values
+    const months = ['Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'];
+    const revenueVals = [22000, 25000, 21000, 27000, 30000, 28000, 32000, 34000, 36000, 40000, 42000, 45000];
+    drawLineChart('lineChart', months, revenueVals, '#ff8c00');
+
+    /* ========== Bar Chart (Top services) ========== */
+    function drawBarChart(id, labels, data, colors) {
+      const c = document.getElementById(id);
+      const ctx = c.getContext('2d');
+      const DPR = window.devicePixelRatio || 1;
+      const W = c.clientWidth * DPR;
+      const H = c.clientHeight * DPR;
+      c.width = W; c.height = H; ctx.scale(DPR, DPR);
+      ctx.clearRect(0, 0, c.clientWidth, c.clientHeight);
+
+      const pad = 28;
+      const barW = (c.clientWidth - pad * 2) / data.length * 0.6;
+      const max = Math.max(...data);
+      data.forEach((v, i) => {
+        const x = pad + i * ((c.clientWidth - pad * 2) / data.length) + (((c.clientWidth - pad * 2) / data.length) - barW) / 2;
+        const h = (v / max) * (c.clientHeight - pad * 2 - 40);
+        const y = c.clientHeight - pad - h - 10;
+        ctx.fillStyle = colors[i] || '#ff8c00';
+        roundRect(ctx, x, y, barW, h, 6, true, false);
+        // label
+        ctx.fillStyle = '#556';
+        ctx.font = '12px Poppins';
+        ctx.fillText(labels[i], x, c.clientHeight - 6);
+      });
+    }
+    function roundRect(ctx, x, y, w, h, r, fill, stroke) {
+      if (typeof stroke === 'undefined') stroke = true;
+      if (typeof r === 'undefined') r = 5;
+      ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+      if (fill) ctx.fill(); if (stroke) ctx.stroke();
+    }
+    drawBarChart('barChart', ['Registration', 'Audit', 'GST', 'Others'], [45, 30, 60, 20], ['#ff8c00', '#ffb347', '#ffc76b', '#ffdca8']);
+
+    /* ========== Populate recent activity rows ========== */
+    const rows = [
+      { client: 'Apex Traders', service: 'GST Filing', amount: '₹ 12,400', status: 'Completed', date: '2025-09-10' },
+      { client: 'Green Foods Pvt', service: 'Company Incorporation', amount: '₹ 8,000', status: 'Pending', date: '2025-09-07' },
+      { client: 'BlueTech', service: 'Statutory Audit', amount: '₹ 42,000', status: 'Completed', date: '2025-08-29' },
+      { client: 'Studio Nine', service: 'Account Outsource', amount: '₹ 6,500', status: 'In Progress', date: '2025-08-15' }
+    ];
+    const body = document.getElementById('activityBody');
+    rows.forEach(r => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${r.client}</td><td>${r.service}</td><td>${r.amount}</td><td><span class="badge">${r.status}</span></td><td>${r.date}</td>`;
+      body.appendChild(tr);
+    });
+
+    /* ========== Counters animation (when visible) ========== */
+    const counterEls = document.querySelectorAll('.choosnum');
+    const counterObs = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const goal = +el.getAttribute('data-goal');
+          let cur = 0;
+          const dur = 1200;
+          const stepTime = Math.max(12, Math.floor(dur / goal));
+          const step = () => {
+            cur += Math.ceil(goal / (dur / stepTime));
+            if (cur >= goal) cur = goal;
+            el.textContent = cur;
+            if (cur < goal) setTimeout(step, stepTime);
+          };
+          step();
+          obs.unobserve(el);
+        }
+      });
+    }, { threshold: 0.4 });
+    counterEls.forEach(e => counterObs.observe(e));
+
+    /* ========== Responsive redraw on resize ========== */
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        drawSpark('miniRev', [20, 30, 26, 40, 50, 45, 55, 60, 70, 65], '#ff8c00');
+        drawSpark('miniClients', [2, 3, 4, 6, 5, 8, 9, 11, 12, 13], '#0ea5a4');
+        drawSpark('miniProj', [1, 2, 3, 2, 4, 3, 5, 6, 6, 7], '#ffb347');
+        drawSpark('miniPend', [5, 4, 4, 3, 6, 5, 5, 4, 4, 6], '#ef4444');
+        drawLineChart('lineChart', months, revenueVals, '#ff8c00');
+        drawBarChart('barChart', ['Registration', 'Audit', 'GST', 'Others'], [45, 30, 60, 20], ['#ff8c00', '#ffb347', '#ffc76b', '#ffdca8']);
+      }, 220);
+    });
+
+    /* ========== Modal basics ========== */
+    const admModal = document.getElementById('admModal');
+    const closeModal = document.getElementById('closeModal');
+    closeModal.addEventListener('click', () => admModal.classList.remove('open'));
+
+    /* Small demo: refresh button animates KPIs */
+    document.getElementById('refreshBtn').addEventListener('click', () => {
+      // small animation: bump numbers
+      const newRev = kpiData.revenue + rand(-5000, 12000);
+      const newClients = Math.max(5, kpiData.clients + rand(-3, 6));
+      document.getElementById('kRev').textContent = `₹ ${newRev.toLocaleString()}`;
+      document.getElementById('kClients').textContent = `${newClients}`;
+      // animate lines a bit
+      drawLineChart('lineChart', months, revenueVals.map(v => v + rand(-2000, 3000)), '#ff8c00');
+    });
+
+    /* Accessibility: keyboard toggle for sidebar */
+    admToggle.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') admSidebar.classList.toggle('open');
+    });
+  </script>
+</body>
+
+</html>

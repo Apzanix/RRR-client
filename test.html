@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RRR & CO — Insights & Resources</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f6f7fb;
+      color: #333;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Merriweather', serif;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* Hero */
+    .amber-summit {
+      text-align: center;
+      padding: 6rem 1rem;
+      background: #ff8c00;
+      color: #fff;
+      animation: fadeDown 1.2s ease-out;
+    }
+
+    .amber-summit h1 {
+      font-size: 2.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .amber-summit p {
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* Articles (Alternating Layout) */
+    .silk-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3rem;
+      padding: 4rem 8%;
+      flex-wrap: wrap;
+      transition: 0.5s ease;
+    }
+
+    .silk-row:nth-child(even) {
+      flex-direction: row-reverse;
+      background: #fff;
+    }
+
+    .silk-img {
+      flex: 1;
+      min-width: 300px;
+      max-width: 500px;
+      overflow: hidden;
+      border-radius: 16px;
+    }
+
+    .silk-img img {
+      width: 100%;
+      height: 100%;
+      border-radius: 16px;
+      object-fit: cover;
+      transition: transform 0.8s ease;
+    }
+
+    .silk-img:hover img {
+      transform: scale(1.05);
+    }
+
+    .silk-content {
+      flex: 1;
+      max-width: 500px;
+      text-align: left;
+      animation: fadeSlide 1.2s ease;
+    }
+
+    .silk-content h2 {
+      color: #ff8c00;
+      margin-bottom: 1rem;
+    }
+
+    .silk-content p {
+      color: #555;
+      font-size: 1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .silk-content a {
+      color: #ff8c00;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    /* Resources (Horizontal Scroll) */
+    .glint-wrap {
+      background-color: #fff;
+      padding: 4rem 0;
+      overflow-x: auto;
+      display: flex;
+      gap: 2rem;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .glint-item {
+      flex: 0 0 300px;
+      scroll-snap-align: center;
+      background: #f6f7fb;
+      border-radius: 14px;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+      transition: transform 0.4s ease;
+    }
+
+    .glint-item:hover {
+      transform: translateY(-6px);
+    }
+
+    .glint-item i {
+      font-size: 2.2rem;
+      color: #ff8c00;
+      margin-bottom: 1rem;
+    }
+
+    .glint-item h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .glint-item p {
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    /* Animation */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateX(-30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .amber-summit h1 { font-size: 2rem; }
+      .silk-row { padding: 2.5rem 1.5rem; }
+      .silk-content { text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <section class="amber-summit">
+    <h1>RRR & CO — Insights Hub</h1>
+    <p>Where financial clarity meets forward thinking — explore expert views and essential resources built for growth.</p>
+  </section>
+
+  <!-- BLOG SECTIONS -->
+  <section class="silk-row">
+    <div class="silk-img">
+      <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f" alt="Tax Strategy">
+    </div>
+    <div class="silk-content">
+      <h2><i class="fa-solid fa-coins"></i> Tax Strategy 2.0</h2>
+      <p>RRR & CO’s experts decode the evolving tax landscape — learn how digitalization transforms compliance into opportunity.</p>
+      <a href="#">Read the article →</a>
+    </div>
+  </section>
+
+  <section class="silk-row">
+    <div class="silk-img">
+      <img src="img/blogimg.jpg" alt="Audit Simplified">
+    </div>
+    <div class="silk-content">
+      <h2><i class="fa-solid fa-clipboard-check"></i> Audit Reimagined</h2>
+      <p>Discover how transparency and automation help businesses achieve more meaningful audits with lasting value.</p>
+      <a href="#">Read the article →</a>
+    </div>
+  </section>
+
+  <section class="silk-row">
+    <div class="silk-img">
+      <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095" alt="Growth">
+    </div>
+    <div class="silk-content">
+      <h2><i class="fa-solid fa-chart-line"></i> Scaling with Precision</h2>
+      <p>Build a smarter, leaner business with RRR & CO insights — from compliance to expansion strategies that deliver.</p>
+      <a href="#">Read the article →</a>
+    </div>
+  </section>
+
+  <!-- RESOURCES SCROLL -->
+  <section class="glint-wrap">
+    <div class="glint-item">
+      <i class="fa-solid fa-book-open"></i>
+      <h3>Tax Handbooks</h3>
+      <p>Comprehensive guides for structured tax planning and returns.</p>
+    </div>
+
+    <div class="glint-item">
+      <i class="fa-solid fa-scale-balanced"></i>
+      <h3>Compliance Library</h3>
+      <p>Legal and statutory tools to maintain effortless adherence.</p>
+    </div>
+
+    <div class="glint-item">
+      <i class="fa-solid fa-briefcase"></i>
+      <h3>Startup Playbook</h3>
+      <p>Step-by-step resources for entrepreneurs setting up new ventures.</p>
+    </div>
+
+    <div class="glint-item">
+      <i class="fa-solid fa-handshake-angle"></i>
+      <h3>Client Access</h3>
+      <p>Streamlined documentation and data-sharing tools for partners.</p>
+    </div>
+
+    <div class="glint-item">
+      <i class="fa-solid fa-cloud-arrow-down"></i>
+      <h3>Reports & Downloads</h3>
+      <p>Access the latest reports and industry insight PDFs by RRR & CO.</p>
+    </div>
+  </section>
+
+</body>
+</html>
