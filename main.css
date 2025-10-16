@@ -153,87 +153,177 @@ nav ul li a:hover {
 }
 
 
-/* Hero */
 
-/* Hero Section */
+/* HERO SECTION */
 .hero {
   position: relative;
+  height: 80vh;
   width: 100%;
-  height: 100vh; /* Full viewport height */
   overflow: hidden;
-  background-color: #fff; /* fallback color */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #fff;
 }
 
-/* Hero Image (fills entire section) */
-.hero img {
+/* BACKGROUND IMAGES */
+.hero::before,
+.hero::after {
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* makes the image fill area */
+  background-size: cover;
+  background-position: center;
+  transform: scale(1);
+  animation: zoomFade 16s ease-in-out infinite;
+  z-index: 0;
 }
 
+/* First image */
+.hero::before {
+  background-image: url("https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1920&q=80");
+  animation-delay: 0s;
+}
 
+/* Second image */
+.hero::after {
+  background-image: url("https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1920&q=80");
+  animation-delay: 8s;
+}
 
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .hero {
-    height: 80vh;
+/* ANIMATION FOR BOTH IMAGES */
+@keyframes zoomFade {
+  0%, 45% {
+    opacity: 1;
+    transform: scale(1);
   }
-
-  .hero img {
-    object-fit: contain; /* prevent distortion on smaller screens */
-    background-color: #fff; /* ensures white padding looks clean */
+  50%, 95% {
+    opacity: 0;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
-@media (max-width: 480px) {
-  .hero {
-    height: 70vh;
-  }
-
-  .hero img {
-    object-fit: contain;
-  }
+/* DARK OVERLAY */
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(
+    to bottom right,
+    rgba(0, 0, 0, 0.75),
+    rgba(0, 0, 0, 0.55)
+  );
+  z-index: 1;
 }
 
-
-/* === RESPONSIVE DESIGN === */
-
-
-
+/* CONTENT */
 .hero-content {
   position: relative;
-  text-align: center;
-  max-width: 800px;
-  padding: 0 20px;
+  z-index: 2;
+  max-width: 900px;
+  padding: 0 8%;
+  animation: fadeInUp 1.2s ease-out;
 }
 
-.hero h1 {
-  font-size: 48px;
-  margin-bottom: 20px;
-}
-
-.hero p {
-  font-size: 20px;
-  margin-bottom: 30px;
-}
-
-.hero .btn {
-  padding: 12px 25px;
-  background: #f39c12;
+/* HEADING */
+.fade-heading {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
   color: #fff;
-  border-radius: 5px;
-  font-weight: bold;
-  transition: 0.3s;
+  opacity: 0;
+  animation: fadeSlideIn 1.5s ease forwards;
 }
 
-.hero .btn:hover {
-  background: #d78c0f;
+/* PARAGRAPH */
+.fade-subtext {
+  font-size: clamp(1rem, 1.8vw, 1.2rem);
+  color: #f0f0f0;
+  margin-top: 1.5rem;
+  margin-bottom: 2.5rem;
+  line-height: 1.8;
+  opacity: 0;
+  animation: fadeSlideIn 2s ease forwards;
+  animation-delay: 0.4s;
 }
 
+/* BUTTONS */
+.hero-actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeSlideIn 2.3s ease forwards;
+  animation-delay: 0.8s;
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 14px 36px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 30px;
+  transition: all 0.3s ease;
+  border: none;
+  display: inline-block;
+  min-width: 150px;
+  text-align: center;
+}
+
+/* BUTTON STYLES */
+.btn-primary {
+  background: linear-gradient(135deg, #ff7a00, #ffb347);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(255, 122, 0, 0.3);
+}
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(255, 122, 0, 0.6);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: #fff;
+  border: 2px solid #fff;
+}
+.btn-secondary:hover {
+  background: #fff;
+  color: #ff7a00;
+}
+
+/* TEXT ANIMATIONS */
+@keyframes fadeSlideIn {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(25px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* RESPONSIVENESS */
+@media (max-width: 768px) {
+  .hero { height: 90vh; padding: 0 5%; }
+  .fade-heading { font-size: 2.2rem; }
+  .fade-subtext { font-size: 1rem; }
+  .btn-primary, .btn-secondary { width: 80%; }
+}
+@media (max-width: 480px) {
+  .hero { height: 85vh; padding: 0 4%; }
+  .fade-heading { font-size: 1.8rem; }
+  .fade-subtext { font-size: 0.95rem; }
+  .btn-primary, .btn-secondary { width: 100%; }
+}
 
 /* --- ABOUT SECTION --- */
 .about {
